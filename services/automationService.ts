@@ -12,7 +12,7 @@ export class RemotePlaywrightBridge {
     private config: AutomationConfig,
     private url: string,
     private onStep: (tcId: string, step: TestStep) => void
-  ) {}
+  ) { }
 
   /**
    * Executes the test suite using the standard backend payload.
@@ -20,7 +20,7 @@ export class RemotePlaywrightBridge {
    */
   async runSuite(testCases: TestCase[], overrideUrl?: string, overrideConfig?: any): Promise<TestCase[]> {
     const targetUrl = overrideUrl || this.url;
-    
+
     // Construct the payload matching the tool_definition.json
     const payload = {
       url: targetUrl,
@@ -63,10 +63,10 @@ export class RemotePlaywrightBridge {
       }
 
       const result = await response.json();
-      
-      if (result && result.testCases) {
-        const updatedCases = result.testCases as TestCase[];
-        
+
+      if (result && (result.testCases || result.results)) {
+        const updatedCases = (result.testCases || result.results) as TestCase[];
+
         // Signal the UI for step-by-step updates
         for (const tc of updatedCases) {
           if (tc.executedSteps) {
@@ -77,7 +77,6 @@ export class RemotePlaywrightBridge {
         }
         return updatedCases;
       }
-
       throw new Error('Invalid response format from backend');
 
     } catch (error: any) {
@@ -88,7 +87,7 @@ export class RemotePlaywrightBridge {
 }
 
 class DeterministicDriver {
-  constructor(private config: AutomationConfig, private url: string, private onStep: (tcId: string, step: TestStep) => void) {}
+  constructor(private config: AutomationConfig, private url: string, private onStep: (tcId: string, step: TestStep) => void) { }
   async runSuite(testCases: TestCase[]): Promise<TestCase[]> {
     const results: TestCase[] = [];
     for (const tc of testCases) {
