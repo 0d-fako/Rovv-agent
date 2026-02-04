@@ -1,0 +1,5 @@
+{
+  "name": "QA-GPT: Autonomous Testing Agent",
+  "description": "An intelligent QA automation agent that analyzes requirements, generates test cases, and simulates UI testing with detailed reporting.",
+  "requestFramePermissions": []
+}
