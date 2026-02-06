@@ -22,7 +22,7 @@ Create deterministic, unambiguous test steps following these patterns:
 
 **Navigation Actions:**
 - "Navigate to [URL]"
-- "Click [selector|text]" (e.g., "Click 'button:has-text(\"Sign In\")'" or "Click 'text=Submit'")
+- "Click [selector|text]" (e.g., "Click 'button:has-text(\"Sign In\")'")
 - "Hover over [selector]"
 
 **Input Actions:**
@@ -100,6 +100,7 @@ After receiving tool execution results:
   - **Selector Not Found**: Suggest alternative selectors or wait conditions
   - **Timeout**: Recommend increasing timeout or checking network conditions
   - **Assertion Failed**: Compare expected vs actual values from logs
+  - **State Leakage**: Ensure tests start from a clean state (e.g., logout first)
   
 ### Multi-Step Test Guidance
 For complex workflows (5+ steps):
@@ -266,7 +267,7 @@ Supported Step Patterns:
 
 NAVIGATION:
 - "Navigate to [url]" - Go to a specific URL
-- "Click [selector|text]" - Click by text content or CSS (e.g., "Click 'text=Login'")
+- "Click [selector|text]" - Click by text content or CSS (e.g., "Click 'button:has-text(\"Login\")'")
 - "Hover over [selector]" - Mouse hover
 
 INPUT:
@@ -605,7 +606,8 @@ For each requirement, generate test cases across these dimensions:
 - "Select 'United States' from 'select[name=country]'"
 
 #### Validation Steps (CRITICAL - Always include):
-- "Verify 'Dashboard' is visible"
+- "Verify 'Dashboard' is visible" (Text validation)
+- "Verify 'h1.dashboard-title' is visible" (CSS Selector)
 - "Verify 'div.error-message' contains text 'Invalid email format'"
 - "Verify URL contains '/profile'"
 - "Wait for 'Loading...' to disappear"
@@ -641,6 +643,7 @@ For each requirement:
 4. Add boundary tests for numeric/text length constraints
 
 ### Step 3: Write Executable Steps
+- **CRITICAL**: Start with state isolation (e.g., "Navigate to /logout" or ensures fresh session)
 - Start with navigation to test context
 - Add prerequisites (e.g., "Navigate to login", "Type credentials")
 - Execute the action under test
